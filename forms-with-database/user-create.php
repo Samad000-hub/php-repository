@@ -7,9 +7,21 @@ if(isset($_POST["submit"])){
   
       // get password which user is entered
       $password=$_POST["password"];
+
+
+      // To avoid attack on this form attackers(SQL injection)
+      $username=mysqli_real_escape_string($connection,$username);
+      $password=mysqli_real_escape_string($connection,$password);
   
     // Connecting with database for communication => portOfDatabase, username, password, databaseName
       $connection=mysqli_connect('localhost:3307','root','root','login');
+
+
+      //Password encryption
+      $hashFormat="$2y$10$";
+      $salt="isamadmahmoodsamad";
+      $hashFormat_and_salt=$hashFormat . $salt;
+      $password=crypt($password,$hashFormat_and_salt);
 
     
       //query to insert username and password in database
